@@ -23,6 +23,23 @@ class TestCLI(unittest.TestCase):
         self.assertIn("PUNTAJE TOTAL: 21 / 25", joined)
         self.assertIn("PRIORIDAD:     Crítica (P1)", joined)
 
+    def test_run_reintenta_cuando_el_valor_es_invalido(self):
+        answers = iter(["x", "4", "5", "2", "5", "5"])
+        output = []
+
+        def fake_input(prompt: str) -> str:
+            output.append(prompt)
+            return next(answers)
+
+        def fake_print(*args):
+            output.append(" ".join(str(arg) for arg in args))
+
+        run(input_fn=fake_input, output_fn=fake_print)
+
+        joined = "\n".join(output)
+        self.assertIn("Ingresa un entero entre 1 y 5", joined)
+        self.assertIn("PUNTAJE TOTAL: 21 / 25", joined)
+
 
 if __name__ == "__main__":
     unittest.main()

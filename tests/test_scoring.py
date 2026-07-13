@@ -56,6 +56,15 @@ class TestLimitesYValidaciones(unittest.TestCase):
         with self.assertRaises(ValueError):
             score_incident({1: 3, 2: 3, 3: 3, 4: 3})
 
+    def test_el_orden_de_las_claves_no_altera_el_resultado(self):
+        ordenado = {1: 4, 2: 5, 3: 2, 4: 5, 5: 5}
+        invertido = {5: 5, 4: 5, 3: 2, 2: 5, 1: 4}
+
+        esperado = score_incident(ordenado)
+        actual = score_incident(invertido)
+
+        self.assertEqual((actual.total, actual.category.code), (esperado.total, esperado.category.code))
+
 
 if __name__ == "__main__":
     unittest.main()
